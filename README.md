@@ -1,1 +1,5 @@
 # Iniflex
+
+# Utilizado spring-boot 4.0.8 + java 25 + sqlite
+
+# Deixei uma lista para salvar funcionários automaticamente ao rodar projeto
