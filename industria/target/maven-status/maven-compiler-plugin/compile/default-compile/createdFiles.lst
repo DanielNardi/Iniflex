@@ -1,0 +1,11 @@
+com\industria\dto\FuncionarioDTO.class
+com\industria\model\Funcionario.class
+com\industria\repository\FuncionarioRepository.class
+com\industria\IndustriaApplication.class
+com\industria\config\MongoConfig$LocalDateToDateConverter.class
+com\industria\controller\FuncionarioController.class
+com\industria\DataInitializer.class
+com\industria\service\FuncionarioService.class
+com\industria\config\MongoConfig.class
+com\industria\model\Pessoa.class
+com\industria\config\MongoConfig$DateToLocalDateConverter.class

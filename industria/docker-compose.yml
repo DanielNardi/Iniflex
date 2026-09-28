@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+
+  # ---------------------------------------------------------------
+  # MongoDB
+  # ---------------------------------------------------------------
+  mongodb:
+    image: mongo:7.0
+    container_name: industria-mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: industria
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - industria-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ---------------------------------------------------------------
+  # Aplicação Spring Boot
+  # ---------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: industria-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/industria?authSource=admin
+      SPRING_DATA_MONGODB_DATABASE: industria
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - industria-network
+
+# ---------------------------------------------------------------
+# Volumes e redes
+# ---------------------------------------------------------------
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  industria-network:
+    driver: bridge
